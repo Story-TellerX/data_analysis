@@ -4,10 +4,7 @@ running:
 	$(path) && kedro run
 
 requirements:
-	pipenv install -r requirements.txt
+	PIPENV_IGNORE_VIRTUALENVS=1 pipenv install -r
 
 venv:
-	pipenv --three
-
-env:
-	source kedro-env/bin/activate
+	PIPENV_IGNORE_VIRTUALENVS=1 pipenv --three
