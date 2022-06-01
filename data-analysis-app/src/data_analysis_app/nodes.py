@@ -7,6 +7,7 @@ import logging
 from typing import Dict
 
 import pandas as pd
+from kedro.extras.datasets.pandas import ExcelDataSet
 
 
 def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
@@ -30,3 +31,9 @@ def get_mapped_data(dict_for_mapping: Dict, data_train: pd.DataFrame) -> pd.Data
     mapped_data_to_xls_file = data_train.rename(dict_for_mapping, axis='columns')
 
     return mapped_data_to_xls_file
+
+
+def save_mapped_data_to_xls(mapped_data_to_xls_file: pd.DataFrame, mapped_data) -> None:
+
+    data_set = ExcelDataSet(filepath="/home/stx/projects/data_analysis/data-analysis-app//data/08_reporting/output.xlsx")
+    data_set.save(mapped_data_to_xls_file)

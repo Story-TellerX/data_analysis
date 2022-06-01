@@ -16,3 +16,16 @@ data_for_mapping:
   filepath: data/01_raw/mapping.xlsx
   load_args:
     engine: openpyxl
+
+mapped_data:
+  type: pandas.ExcelDataSet
+  filepath: data/08_reporting/output.xlsx
+  load_args:
+    engine: openpyxl
+  save_args:
+    filepath: data/08_reporting/output.xlsx
+    if_sheet_exists: replace
+    engine: openpyxl
+    float_format: "%.3f"
+    index: False
+
