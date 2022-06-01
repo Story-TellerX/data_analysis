@@ -16,3 +16,10 @@ def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
     dict_for_mapping = dict(data_mapping.iloc)
 
     return dict_for_mapping
+
+
+def get_data(data_raw: pd.read_excel):
+
+    data_train = data_raw
+
+    return data_train
