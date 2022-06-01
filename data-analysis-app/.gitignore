@@ -56,6 +56,7 @@ atlassian-ide-plugin.xml
 
 # C extensions
 *.so
+*.zip
 
 ### Python template
 # Byte-compiled / optimized / DLL files

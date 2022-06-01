@@ -2,9 +2,10 @@
 This is a boilerplate pipeline
 generated using Kedro 0.18.1
 """
-
+import os
 import logging
 from typing import Dict
+import zipfile
 
 import pandas as pd
 from kedro.extras.datasets.pandas import ExcelDataSet
@@ -35,5 +36,21 @@ def get_mapped_data(dict_for_mapping: Dict, data_train: pd.DataFrame) -> pd.Data
 
 def save_mapped_data_to_xls(mapped_data_to_xls_file: pd.DataFrame, mapped_data) -> None:
 
-    data_set = ExcelDataSet(filepath="/home/stx/projects/data_analysis/data-analysis-app//data/08_reporting/output.xlsx")
+    filepath_to_file = _filepath_to_output_file()
+
+    data_set = ExcelDataSet(filepath=filepath_to_file)
     data_set.save(mapped_data_to_xls_file)
+
+    filename = filepath_to_file
+
+    with zipfile.ZipFile("output_data.zip", mode="w") as archive:
+        archive.write(filename)
+
+
+def _filepath_to_output_file():
+    exe = 'output.xlsx'
+    for root, dirs, files in os.walk(r"/home"):
+        for name in files:
+            if name == exe:
+                filepath_to_file_raw = os.path.abspath(os.path.join(root, name))
+                return filepath_to_file_raw
