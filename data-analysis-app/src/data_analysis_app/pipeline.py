@@ -5,7 +5,7 @@ generated using Kedro 0.18.1
 
 from kedro.pipeline import Pipeline, node, pipeline
 
-from .nodes import get_data_for_mapping, get_data
+from .nodes import get_data_for_mapping, get_data, get_mapped_data
 
 
 def create_pipeline_for_mapping_and_write_xls(**kwargs) -> Pipeline:
@@ -19,15 +19,15 @@ def create_pipeline_for_mapping_and_write_xls(**kwargs) -> Pipeline:
             ),
             node(
                 func=get_data,
-                inputs=["data_raw", "dict_for_mapping"],
+                inputs=["data_raw"],
                 outputs="data_train",
                 name="get_data_and_make_map",
             ),
-            # node(
-            #     func=report_accuracy,
-            #     inputs=["y_pred", "y_test"],
-            #     outputs=None,
-            #     name="report_accuracy",
-            # ),
+            node(
+                func=get_mapped_data,
+                inputs=["dict_for_mapping", "data_train"],
+                outputs="mapped_data_to_xls_file",
+                name="mapped_data",
+            ),
         ]
     )

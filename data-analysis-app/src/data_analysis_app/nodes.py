@@ -18,8 +18,15 @@ def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
     return dict_for_mapping
 
 
-def get_data(data_raw: pd.read_excel):
+def get_data(data_raw: pd.read_excel) -> pd.DataFrame:
 
     data_train = data_raw
 
     return data_train
+
+
+def get_mapped_data(dict_for_mapping: Dict, data_train: pd.DataFrame) -> pd.DataFrame:
+
+    mapped_data_to_xls_file = data_train.rename(dict_for_mapping, axis='columns')
+
+    return mapped_data_to_xls_file
