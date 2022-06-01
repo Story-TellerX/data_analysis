@@ -2,3 +2,17 @@
 #
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/data/data_catalog.html
+
+data_raw:
+  type: pandas.ExcelDataSet
+  filepath: data/01_raw/data.xlsx
+  load_args:
+    engine: openpyxl
+    sheet_name: Data
+    convert_float: False
+
+data_for_mapping:
+  type: pandas.ExcelDataSet
+  filepath: data/01_raw/mapping.xlsx
+  load_args:
+    engine: openpyxl
