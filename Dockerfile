@@ -28,5 +28,8 @@ WORKDIR /app
 # copy project files to workdir
 COPY . .
 
-CMD ["python3"]
-# kedro run
+# cd wordir to project dir
+WORKDIR /app/data-analysis-app
+
+# run kedro pipeline
+CMD ["kedro", "run"]

@@ -89,7 +89,8 @@ def _filepath_to_output_file() -> str:
     """
 
     exe = 'output.xlsx'
-    for root, dirs, files in os.walk(r"/home"):
+    filepath_to_file_raw = ''
+    for root, dirs, files in os.walk(r"/app"):
         for name in files:
             if name == exe:
                 filepath_to_file_raw = os.path.abspath(os.path.join(root, name))
