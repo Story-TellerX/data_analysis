@@ -93,22 +93,30 @@ def save_mapped_data_to_xls(
 
     save_mapped_data = mapped_data.merge(data_to_xls_file, how='right')
 
-    # with zipfile.ZipFile("output_data.zip", mode="w") as archive:
-    #     archive.write(filename, "output_data_good.zip")
+    # Creating a zip file
+    # Takes filepath to xlsx file
+    inpath = "./data/08_reporting/output.xlsx"
+    # put a path to output file
+    outpath = "./data/09_output/output_data_zip.zip"
+    with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        # put two params to writer first - file to zip, second - filepath to archived file
+        zf.write(inpath, os.path.basename(inpath))
+
     return save_mapped_data
 
 
-def _filepath_to_output_file() -> str:
-    """Uses os module to get absolute path to output xlsx file.
-
-    Returns:
-        Path to file as str
-    """
-
-    exe = 'output.xlsx'
-    filepath_to_file_raw = ''
-    for root, dirs, files in os.walk(r"/home"):
-        for name in files:
-            if name == exe:
-                filepath_to_file_raw = os.path.abspath(os.path.join(root, name))
-                return filepath_to_file_raw
+# first solition for search filepath to xlsx file
+# def _filepath_to_output_file() -> str:
+#     """Uses os module to get absolute path to output xlsx file.
+#
+#     Returns:
+#         Path to file as str
+#     """
+#
+#     exe = 'output.xlsx'
+#     filepath_to_file_raw = ''
+#     for root, dirs, files in os.walk(r"/home"):
+#         for name in files:
+#             if name == exe:
+#                 filepath_to_file_raw = os.path.abspath(os.path.join(root, name))
+#                 return filepath_to_file_raw
