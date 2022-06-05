@@ -22,10 +22,13 @@ mapped_data:
   filepath: data/08_reporting/output.xlsx
   load_args:
     engine: openpyxl
+
+save_mapped_data:
+  type: pandas.ExcelDataSet
+  filepath: data/08_reporting/output.xlsx
   save_args:
-    filepath: data/08_reporting/output.xlsx
-    if_sheet_exists: replace
     engine: openpyxl
     float_format: "%.3f"
     index: False
+
 

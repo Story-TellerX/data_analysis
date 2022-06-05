@@ -5,7 +5,13 @@ generated using Kedro 0.18.1
 
 from kedro.pipeline import Pipeline, node, pipeline
 
-from .nodes import get_data_for_mapping, get_data, get_mapped_data, save_mapped_data_to_xls
+from .nodes import (
+    get_data_for_mapping,
+    get_data,
+    get_mapped_data,
+    save_mapped_data_to_xls,
+    get_data_from_xls_output_file
+)
 
 
 def create_pipeline_for_mapping_and_write_xls(**kwargs) -> Pipeline:
@@ -30,10 +36,16 @@ def create_pipeline_for_mapping_and_write_xls(**kwargs) -> Pipeline:
                 name="mapped_data",
             ),
             node(
+                func=get_data_from_xls_output_file,
+                inputs="mapped_data",
+                outputs="mapped_empty_data_as_dataframe",
+                name="raw_output_xls_file",
+            ),
+            node(
                 func=save_mapped_data_to_xls,
-                inputs=["mapped_data_to_xls_file", "mapped_data"],
-                outputs=None,
-                name="xls_file",
+                inputs=["mapped_data_to_xls_file", "mapped_empty_data_as_dataframe"],
+                outputs="save_mapped_data",  # should be return mapped data
+                name="_output_xls_file",
             ),
         ]
     )
