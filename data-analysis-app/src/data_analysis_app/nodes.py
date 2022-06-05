@@ -91,7 +91,7 @@ def save_mapped_data_to_xls(
 
     data_to_xls_file = mapped_data_to_xls_file
 
-    save_mapped_data = mapped_data.merge(data_to_xls_file, how='right')
+    save_mapped_data = mapped_data.join(data_to_xls_file, how='right')
 
     # Creating a zip file
     # Takes filepath to xlsx file
