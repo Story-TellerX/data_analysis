@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 kedro = {version = "==0.18.1", extras = ["pandas.csvdataset"]}
-pandas = "*"
-openpyxl = "*"
+pandas = "==1.4.2"
+openpyxl = "==3.0.10"
 black = "~=22.0"
 flake8 = "<4.0,>=3.7.9"
 ipython = ">=7.31.1,<8.0"
@@ -18,7 +18,7 @@ nbstripout = "~=0.4"
 pytest-cov = "~=3.0"
 pytest-mock = ">=1.7.1,<2.0"
 pytest = "~=6.2"
-numpy = "*"
+numpy = ">=1.18.5"
 
 [dev-packages]
 
