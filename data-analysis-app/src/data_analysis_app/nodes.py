@@ -98,9 +98,9 @@ def save_mapped_data_to_xls(
     inpath = "./data/08_reporting/output.xlsx"
     # put a path to output file
     outpath = "./data/09_output/output_data_zip.zip"
-    with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+    with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         # put two params to writer first - file to zip, second - filepath to archived file
-        zf.write(inpath, os.path.basename(inpath))
+        archive.write(inpath, os.path.basename(inpath))
 
     return save_mapped_data
 
