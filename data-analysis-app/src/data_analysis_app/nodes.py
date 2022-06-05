@@ -99,7 +99,8 @@ def save_mapped_data_to_xls(
     # put a path to output file
     outpath = "./data/09_output/output_data_zip.zip"
     with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        # put two params to writer first - file to zip, second - filepath to archived file
+        # put two params to writer first - filepath to file which should be zipped,
+        # second - filepath to dir where should be putted archived file
         archive.write(inpath, os.path.basename(inpath))
 
     return save_mapped_data
