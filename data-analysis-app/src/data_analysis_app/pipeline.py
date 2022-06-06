@@ -7,7 +7,7 @@ from kedro.pipeline import Pipeline, node, pipeline
 
 from .nodes import (
     get_data_for_mapping,
-    get_data,
+    get_raw_data,
     get_mapped_data,
     save_mapped_data_to_xls,
     get_data_from_xls_output_file
@@ -24,7 +24,7 @@ def create_pipeline_for_mapping_and_write_xls(**kwargs) -> Pipeline:
                 name="get_dict_for_mapping",
             ),
             node(
-                func=get_data,
+                func=get_raw_data,
                 inputs=["data_raw"],
                 outputs="data_train",
                 name="get_data_and_make_map",

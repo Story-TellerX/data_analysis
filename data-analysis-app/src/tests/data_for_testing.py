@@ -6,3 +6,5 @@ DICT_FOR_MAPPING_TEST = {
     'Currency': 'CURRENCY',
     'Invoice date': 'INVOICE'
 }
+
+LIST_OF_COLUMNS = "Index(['Invoice no', 'PO number', 'Currency', 'Invoice date', 'Spend (SGD)'], dtype='object')"

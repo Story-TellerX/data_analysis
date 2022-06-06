@@ -27,7 +27,7 @@ def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
     return dict_for_mapping
 
 
-def get_data(data_raw: pd.read_excel) -> pd.DataFrame:
+def get_raw_data(data_raw: pd.read_excel) -> pd.DataFrame:
     """Uses pandas read ExcelDataSet for getting training data.
 
     Args:

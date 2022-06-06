@@ -12,13 +12,11 @@ from pathlib import Path
 import pandas as pd
 import pytest
 from kedro.config import ConfigLoader
-from kedro.extras.datasets.pandas import ExcelDataSet
 from kedro.framework.context import KedroContext
 from kedro.framework.hooks import _create_hook_manager
 from kedro.framework.project import settings
-from kedro.io import DataCatalog
 
-from src.data_analysis_app.nodes import get_data_for_mapping
+from src.data_analysis_app.nodes import get_data_for_mapping, get_raw_data
 from src.tests import data_for_testing
 
 
@@ -38,10 +36,17 @@ def project_context(config_loader):
 
 
 @pytest.fixture(scope="module")
-def catalog():
+def catalog_mapping():
     data_for_mapping = pd.read_excel("./data/01_raw/mapping.xlsx", engine="openpyxl")
 
     return data_for_mapping
+
+
+@pytest.fixture(scope="module")
+def catalog_data():
+    raw_data = pd.read_excel("./data/01_raw/data.xlsx", engine="openpyxl")
+
+    return raw_data
 
 
 # The tests below are here for the demonstration purpose
@@ -52,7 +57,21 @@ class TestProjectContext:
         assert project_context.project_path == Path.cwd()
 
 
-def test_dict_for_mapping(catalog):
-    print(catalog)
-    test_call_func = get_data_for_mapping(catalog)
+def test_dict_for_mapping(catalog_mapping):
+    test_call_func = get_data_for_mapping(catalog_mapping)
+
+    test_size = len(test_call_func)
+    assert type(test_call_func) is dict
+    assert test_size > 0
     assert test_call_func == data_for_testing.DICT_FOR_MAPPING_TEST
+
+
+def test_dict_for_raw_data(catalog_data):
+    test_call_func = get_raw_data(catalog_data)
+    test_for_not_empty_value = test_call_func.empty
+    test_value = str(test_call_func.columns)
+    test_count_of_header = test_call_func.shape[1]
+    assert test_count_of_header == 5
+    assert test_value == data_for_testing.LIST_OF_COLUMNS
+    assert type(test_call_func) is pd.DataFrame
+    assert test_for_not_empty_value is False
