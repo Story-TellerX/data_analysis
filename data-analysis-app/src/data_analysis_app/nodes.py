@@ -91,7 +91,9 @@ def save_mapped_data_to_xls(
 
     data_to_xls_file = mapped_data_to_xls_file
 
-    save_mapped_data = mapped_data.join(data_to_xls_file, how='right')
+    mapped_data.drop(mapped_data.index, inplace=True)
+
+    save_mapped_data = mapped_data.merge(data_to_xls_file, how='right')
 
     # Creating a zip file
     # Takes filepath to xlsx file
@@ -102,7 +104,6 @@ def save_mapped_data_to_xls(
         # put two params to writer first - filepath to file which should be zipped,
         # second - filepath to dir where should be putted archived file
         archive.write(inpath, os.path.basename(inpath))
-
     return save_mapped_data
 
 

@@ -30,5 +30,13 @@ save_mapped_data:
     engine: openpyxl
     float_format: "%.3f"
     index: False
+#    writer:
+#      if_sheet_exists: replace
+#      mode: "a"
+#    error: raise a ValueError.
+#    new: Create a new sheet, with a name determined by the engine.
+#    replace: Delete the contents of the sheet before writing to it.
+#    overlay: Write contents to the existing sheet without removing the old contents.
+
 
 
