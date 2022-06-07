@@ -7,10 +7,10 @@ from kedro.pipeline import Pipeline, node, pipeline
 
 from .nodes import (
     get_data_for_mapping,
-    get_raw_data,
+    get_data_from_xls_output_file,
     get_mapped_data,
+    get_raw_data,
     save_mapped_data_to_xls,
-    get_data_from_xls_output_file
 )
 
 

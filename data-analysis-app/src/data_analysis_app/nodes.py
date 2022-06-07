@@ -3,9 +3,8 @@ This is a boilerplate pipeline
 generated using Kedro 0.18.1
 """
 import os
-import logging
-from typing import Dict
 import zipfile
+from typing import Dict
 
 import pandas as pd
 
@@ -53,7 +52,7 @@ def get_mapped_data(dict_for_mapping: Dict, data_train: pd.DataFrame) -> pd.Data
         pandas DataFrame: mapped data.
     """
 
-    mapped_data_to_xls_file = data_train.rename(dict_for_mapping, axis='columns')
+    mapped_data_to_xls_file = data_train.rename(dict_for_mapping, axis="columns")
 
     return mapped_data_to_xls_file
 
@@ -74,14 +73,13 @@ def get_data_from_xls_output_file(mapped_data: pd.read_excel) -> pd.DataFrame:
 
 
 def save_mapped_data_to_xls(
-        mapped_data_to_xls_file: pd.DataFrame,
-        mapped_empty_data_as_dataframe: pd.DataFrame
+    mapped_data_to_xls_file: pd.DataFrame, mapped_empty_data_as_dataframe: pd.DataFrame
 ) -> pd.DataFrame:
     """Uses pandas read to_excel for save training mapped data.
 
     Args:
         mapped_data_to_xls_file: Training mapped data.
-        mapped_empty_data_as_dataframe: structure of exists xlsx file where will be saved data
+        mapped_empty_data_as_dataframe: structure of xlsx file where will be saved data
 
     Returns:
         save_mapped_data as pd.DataFrame with call action to_excel from catalog yaml
@@ -93,7 +91,7 @@ def save_mapped_data_to_xls(
 
     mapped_data.drop(mapped_data.index, inplace=True)
 
-    save_mapped_data = mapped_data.merge(data_to_xls_file, how='right')
+    save_mapped_data = mapped_data.merge(data_to_xls_file, how="right")
 
     # Creating a zip file
     # Takes filepath to xlsx file
@@ -107,7 +105,7 @@ def save_mapped_data_to_xls(
     return save_mapped_data
 
 
-# first solition for search filepath to xlsx file
+# first solution for search filepath to xlsx file
 # def _filepath_to_output_file() -> str:
 #     """Uses os module to get absolute path to output xlsx file.
 #
