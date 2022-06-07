@@ -37,14 +37,14 @@ def project_context(config_loader):
 
 @pytest.fixture(scope="module")
 def catalog_mapping():
-    data_for_mapping = pd.read_excel("./data/01_raw/mapping.xlsx", engine="openpyxl")
+    data_for_mapping = pd.read_excel("./src/tests/testing_data/mapping_for_testing.xlsx", engine="openpyxl")
 
     return data_for_mapping
 
 
 @pytest.fixture(scope="module")
 def catalog_data():
-    raw_data = pd.read_excel("./data/01_raw/data.xlsx", engine="openpyxl")
+    raw_data = pd.read_excel("./src/tests/testing_data/data_for_testing.xlsx", engine="openpyxl")
 
     return raw_data
 
