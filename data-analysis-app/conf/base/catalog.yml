@@ -38,5 +38,13 @@ save_mapped_data:
 #    replace: Delete the contents of the sheet before writing to it.
 #    overlay: Write contents to the existing sheet without removing the old contents.
 
-
+raw_data_csv:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/data.csv
+  save_args:
+    index: False
+    date_format: "%Y-%m-%d %H:%M"
+    decimal: .
+    na_values: ["#NA", NA]
+    sep: ","
 
