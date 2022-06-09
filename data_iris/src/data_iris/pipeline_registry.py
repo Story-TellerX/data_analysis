@@ -3,7 +3,7 @@ from typing import Dict
 
 from kedro.pipeline import Pipeline
 
-from data_analysis_app.pipeline import create_pipeline_for_mapping_and_write_xls
+from data_iris.pipeline import create_pipeline
 
 
 def register_pipelines() -> Dict[str, Pipeline]:
@@ -12,6 +12,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
     Returns:
         A mapping from a pipeline name to a ``Pipeline`` object.
     """
+
     return {
-        "__default__": create_pipeline_for_mapping_and_write_xls(),
+        "__default__": create_pipeline(),
     }

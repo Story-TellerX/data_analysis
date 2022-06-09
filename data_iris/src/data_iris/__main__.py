@@ -1,5 +1,5 @@
-"""data-analysis-app file for ensuring the package is executable
-as `data-analysis-app` and `python -m data_analysis_app`
+"""data-iris file for ensuring the package is executable
+as `data_iris` and `python -m data_iris`
 """
 import importlib
 from pathlib import Path
@@ -8,7 +8,7 @@ from kedro.framework.cli.utils import KedroCliError, load_entry_points
 from kedro.framework.project import configure_project
 
 
-def _find_run_command(package_name):  # pragma: no cover
+def _find_run_command(package_name):
     try:
         project_cli = importlib.import_module(f"{package_name}.cli")
         # fail gracefully if cli.py does not exist
@@ -30,18 +30,18 @@ def _find_run_command(package_name):  # pragma: no cover
     return project_cli.run
 
 
-def _find_run_command_in_plugins(plugins):  # pragma: no cover
+def _find_run_command_in_plugins(plugins):
     for group in plugins:
         if "run" in group.commands:
             return group.commands["run"]
 
 
-def main(*args, **kwargs):  # pragma: no cover
+def main(*args, **kwargs):
     package_name = Path(__file__).parent.name
     configure_project(package_name)
     run = _find_run_command(package_name)
     run(*args, **kwargs)
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()
