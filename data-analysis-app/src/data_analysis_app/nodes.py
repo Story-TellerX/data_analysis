@@ -37,6 +37,7 @@ def get_raw_data(data_raw: pd.read_excel) -> pd.DataFrame:
     """
 
     data_train = data_raw
+    data_train['Invoice date'] = pd.to_datetime(data_train['Invoice date']).dt.strftime("%Y/%m/%d")
 
     return data_train
 
@@ -120,3 +121,11 @@ def save_mapped_data_to_xls(
 #             if name == exe:
 #                 filepath_to_file_raw = os.path.abspath(os.path.join(root, name))
 #                 return filepath_to_file_raw
+
+
+def create_csv_file_from_xlsx(data_train: pd.DataFrame) -> pd.DataFrame:
+    raw_data_xlsx = data_train
+    raw_data_xlsx['Invoice date'] = pd.to_datetime(raw_data_xlsx['Invoice date']).dt.strftime("%Y/%m/%d")
+    inpath = "./data/01_raw/data.csv"
+    raw_data_xlsx.to_csv(inpath, index=False)
+    return raw_data_xlsx

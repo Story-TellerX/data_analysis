@@ -10,6 +10,8 @@ data_raw:
     engine: openpyxl
     sheet_name: Data
     convert_float: False
+    dtype: {'Invoice no': int, 'PO number': int, 'Spend (SGD)': float}
+    parse_dates: ["Invoice date"]
 
 data_for_mapping:
   type: pandas.ExcelDataSet
@@ -38,12 +40,11 @@ save_mapped_data:
 #    replace: Delete the contents of the sheet before writing to it.
 #    overlay: Write contents to the existing sheet without removing the old contents.
 
-raw_data_csv:
+data_to_csv_file:
   type: pandas.CSVDataSet
   filepath: data/01_raw/data.csv
   save_args:
     index: False
-    date_format: "%Y-%m-%d %H:%M"
     decimal: .
     na_values: ["#NA", NA]
     sep: ","
