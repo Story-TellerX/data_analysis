@@ -95,15 +95,27 @@ def save_mapped_data_to_xls(
 
     save_mapped_data = mapped_data.merge(data_to_xls_file, how="right")
 
+    inpath_csv = "./data/08_reporting/output.csv"
+    save_mapped_data.to_csv(inpath_csv, index=False)
+
     # Creating a zip file
     # Takes filepath to xlsx file
-    inpath = "./data/08_reporting/output.xlsx"
+    # inpath = "./data/08_reporting/output.xlsx"
+    # # put a path to output file
+    # outpath = "./data/09_output/output_data_zip.zip"
+    # with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+    #     # put two params to writer first - filepath to file which should be zipped,
+    #     # second - filepath to dir where should be putted archived file
+    #     archive.write(inpath, os.path.basename(inpath))
+
+    # Create a zip for multiple files
+    inpath = ["./data/08_reporting/output.xlsx", "./data/08_reporting/output.csv"]
     # put a path to output file
     outpath = "./data/09_output/output_data_zip.zip"
     with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        # put two params to writer first - filepath to file which should be zipped,
-        # second - filepath to dir where should be putted archived file
-        archive.write(inpath, os.path.basename(inpath))
+        for file in inpath:
+            archive.write(file, os.path.basename(file))
+
     return save_mapped_data
 
 
