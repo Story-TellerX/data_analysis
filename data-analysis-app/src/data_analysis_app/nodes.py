@@ -36,26 +36,25 @@ def get_raw_data(data_raw: pd.read_excel) -> pd.DataFrame:
         pandas DataFrame.
     """
 
-    data_raw_from_xls = data_raw
+    data_train = data_raw
     # data_train['Invoice date'] = pd.to_datetime(data_train['Invoice date']).dt.strftime("%Y/%m/%d")
-
-    data_train = _parse_and_format_dates(data_raw_from_xls)
 
     return data_train
 
 
-def get_mapped_data(dict_for_mapping: Dict, data_train: pd.DataFrame) -> pd.DataFrame:
+def get_mapped_data(dict_for_mapping: Dict, data_train_format: pd.DataFrame) -> pd.DataFrame:
     """Uses pandas read ExcelDataSet for getting training data.
 
     Args:
-        data_train: Training data.
+        data_train_format: Training data.
         dict_for_mapping: Dict of the target headers
 
     Returns:
         pandas DataFrame: mapped data.
+
     """
 
-    mapped_data_to_xls_file = data_train.rename(dict_for_mapping, axis="columns")
+    mapped_data_to_xls_file = data_train_format.rename(dict_for_mapping, axis="columns")
 
     return mapped_data_to_xls_file
 
@@ -76,7 +75,7 @@ def get_data_from_xls_output_file(mapped_data: pd.read_excel) -> pd.DataFrame:
 
 
 def save_mapped_data_to_xls(
-    mapped_data_to_xls_file: pd.DataFrame, mapped_empty_data_as_dataframe: pd.DataFrame
+        mapped_data_to_xls_file: pd.DataFrame, mapped_empty_data_as_dataframe: pd.DataFrame
 ) -> pd.DataFrame:
     """Uses pandas read to_excel for save training mapped data.
 
@@ -133,6 +132,6 @@ def create_csv_file_from_xlsx(data_train: pd.DataFrame) -> pd.DataFrame:
     return raw_data_xlsx
 
 
-def _parse_and_format_dates(data_raw_from_xls: pd.DataFrame) -> pd.DataFrame:
-    data_raw_from_xls.loc[0:, "Invoice date"] = pd.to_datetime(data_raw_from_xls["Invoice date"]).dt.strftime("%Y%m%d")
-    return data_raw_from_xls
+def parse_and_format_dates(data_train: pd.DataFrame) -> pd.DataFrame:
+    data_train.loc[0:, "Invoice date"] = pd.to_datetime(data_train["Invoice date"]).dt.strftime("%Y%m%d")
+    return data_train
