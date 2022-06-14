@@ -11,7 +11,7 @@ data_raw:
     sheet_name: Data
     convert_float: False
     dtype: {'Invoice no': int, 'PO number': int, 'Spend (SGD)': float}
-    parse_dates: ["Invoice date"]
+#    parse_dates: ["Invoice date"]
 
 data_for_mapping:
   type: pandas.ExcelDataSet
