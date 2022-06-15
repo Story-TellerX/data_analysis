@@ -26,20 +26,26 @@ def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
     return dict_for_mapping
 
 
-def get_raw_data(data_raw: pd.read_excel) -> pd.DataFrame:
+def get_raw_data(data_raw_csv, data_raw_xlsx) -> pd.DataFrame:
     """Uses pandas read ExcelDataSet for getting training data.
 
     Args:
-        data_raw: Training data.
+        data_raw_csv: Training data from csv file.
+        data_raw_xlsx: Training data from xlsx file.
 
     Returns:
         pandas DataFrame.
     """
 
-    data_train = data_raw
+    if data_raw_csv:
+        data_train = data_raw_csv['']
+        return data_train
+    elif data_raw_xlsx:
+        data_train = data_raw_xlsx['']
+        return data_train
+    else:
+        raise ValueError
     # data_train['Invoice date'] = pd.to_datetime(data_train['Invoice date']).dt.strftime("%Y/%m/%d")
-
-    return data_train
 
 
 def get_mapped_data(dict_for_mapping: Dict, data_train_format: pd.DataFrame) -> pd.DataFrame:
@@ -86,7 +92,6 @@ def save_mapped_data_to_xls(
     Returns:
         save_mapped_data as pd.DataFrame with call action to_excel from catalog yaml
     """
-
     mapped_data = mapped_empty_data_as_dataframe
 
     data_to_xls_file = mapped_data_to_xls_file
@@ -138,7 +143,7 @@ def save_mapped_data_to_xls(
 
 def create_csv_file_from_xlsx(data_train: pd.DataFrame) -> pd.DataFrame:
     raw_data_xlsx = data_train
-    raw_data_xlsx['Invoice date'] = pd.to_datetime(raw_data_xlsx['Invoice date']).dt.strftime("%Y%m%d")
+    raw_data_xlsx['Invoice date'] = pd.to_datetime(raw_data_xlsx['Invoice date']).dt.strftime("%Y/%m/%d")
     inpath = "./data/01_raw/data.csv"
     raw_data_xlsx.to_csv(inpath, index=False)
     return raw_data_xlsx

@@ -1,0 +1,10 @@
+datasets:
+    csv: "pandas.CSVDataSet"
+    xlsx: "pandas.ExcelDataSet"
+
+folders:
+    raw: "01_raw"
+
+filename:
+    csv_file: "data.csv"
+    xlsx_file: "data.xlsx"
