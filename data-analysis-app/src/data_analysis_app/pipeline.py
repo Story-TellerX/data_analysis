@@ -45,7 +45,7 @@ def create_pipeline_for_mapping_and_write_xls(**kwargs) -> Pipeline:
             ),
             node(
                 func=get_data_from_xls_output_file,
-                inputs="mapped_data",
+                inputs=["mapped_data", "params:output_xlsx_path"],
                 outputs="mapped_empty_data_as_dataframe",
                 name="raw_output_xls_file",
             ),

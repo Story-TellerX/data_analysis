@@ -65,7 +65,7 @@ def get_mapped_data(dict_for_mapping: Dict, data_train_format: pd.DataFrame) -> 
     return mapped_data_to_xls_file
 
 
-def get_data_from_xls_output_file(mapped_data: pd.read_excel) -> pd.DataFrame:
+def get_data_from_xls_output_file(mapped_data: pd.read_excel, output_xlsx_path) -> pd.DataFrame:
     """Uses pandas read to_excel for get DataFrames from empty output xlsx file.
 
     Args:
@@ -76,6 +76,7 @@ def get_data_from_xls_output_file(mapped_data: pd.read_excel) -> pd.DataFrame:
     """
 
     mapped_empty_data_as_dataframe = mapped_data
+    path_to_output_xlsx = output_xlsx_path
 
     return mapped_empty_data_as_dataframe
 
