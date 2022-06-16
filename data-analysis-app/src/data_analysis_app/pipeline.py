@@ -70,7 +70,7 @@ def create_pipeline_for_csv_file(**kwargs) -> Pipeline:
             ),
             node(
                 func=create_csv_file_from_xlsx,
-                inputs="data_train",
+                inputs=["data_train", "params:inpath_to_created_csv"],
                 outputs="raw_data_xlsx",
                 name="raw_csv",
             ),
