@@ -1,0 +1,2 @@
+output_xlsx_path: data/08_reporting/output.xlsx
+inpath_to_created_csv: ./data/01_raw/data.csv

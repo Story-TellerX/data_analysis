@@ -26,38 +26,49 @@ def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
     return dict_for_mapping
 
 
-def get_raw_data(data_raw: pd.read_excel) -> pd.DataFrame:
+def get_raw_data(data_raw_xlsx, data_raw_csv) -> pd.DataFrame:
     """Uses pandas read ExcelDataSet for getting training data.
 
     Args:
-        data_raw: Training data.
+        data_raw_csv: Training data from csv file.
+        data_raw_xlsx: Training data from xlsx file.
 
     Returns:
         pandas DataFrame.
     """
 
-    data_train = data_raw
+    if data_raw_csv != {} and data_raw_xlsx != {}:
+        data_train = data_raw_xlsx.get('')
+        return data_train
+    elif data_raw_xlsx:
+        data_train = data_raw_xlsx.get('')
+        return data_train
+    elif data_raw_csv:
+        data_train = data_raw_csv.get('')
+        return data_train
+    else:
+        raise ValueError
+    # data_train['Invoice date'] = pd.to_datetime(data_train['Invoice date']).dt.strftime("%Y/%m/%d")
 
-    return data_train
 
-
-def get_mapped_data(dict_for_mapping: Dict, data_train: pd.DataFrame) -> pd.DataFrame:
+def get_mapped_data(dict_for_mapping: Dict, data_train_format: pd.DataFrame) -> pd.DataFrame:
     """Uses pandas read ExcelDataSet for getting training data.
 
     Args:
-        data_train: Training data.
+        data_train_format: Training data.
         dict_for_mapping: Dict of the target headers
 
     Returns:
         pandas DataFrame: mapped data.
+
     """
 
-    mapped_data_to_xls_file = data_train.rename(dict_for_mapping, axis="columns")
+    mapped_data_to_xls_file = data_train_format.rename(dict_for_mapping, axis="columns")
 
     return mapped_data_to_xls_file
 
 
-def get_data_from_xls_output_file(mapped_data: pd.read_excel) -> pd.DataFrame:
+def get_data_from_xls_output_file(mapped_data: pd.read_excel, output_xlsx_path) -> pd.DataFrame:
     """Uses pandas read to_excel for get DataFrames from empty output xlsx file.
 
     Args:
@@ -68,12 +79,13 @@ def get_data_from_xls_output_file(mapped_data: pd.read_excel) -> pd.DataFrame:
     """
 
     mapped_empty_data_as_dataframe = mapped_data
+    path_to_output_xlsx = output_xlsx_path
 
     return mapped_empty_data_as_dataframe
 
 
 def save_mapped_data_to_xls(
-    mapped_data_to_xls_file: pd.DataFrame, mapped_empty_data_as_dataframe: pd.DataFrame
+        mapped_data_to_xls_file: pd.DataFrame, mapped_empty_data_as_dataframe: pd.DataFrame
 ) -> pd.DataFrame:
     """Uses pandas read to_excel for save training mapped data.
 
@@ -84,7 +96,6 @@ def save_mapped_data_to_xls(
     Returns:
         save_mapped_data as pd.DataFrame with call action to_excel from catalog yaml
     """
-
     mapped_data = mapped_empty_data_as_dataframe
 
     data_to_xls_file = mapped_data_to_xls_file
@@ -93,15 +104,27 @@ def save_mapped_data_to_xls(
 
     save_mapped_data = mapped_data.merge(data_to_xls_file, how="right")
 
+    inpath_csv = "./data/08_reporting/output.csv"
+    save_mapped_data.to_csv(inpath_csv, index=False)
+
     # Creating a zip file
     # Takes filepath to xlsx file
-    inpath = "./data/08_reporting/output.xlsx"
+    # inpath = "./data/08_reporting/output.xlsx"
+    # # put a path to output file
+    # outpath = "./data/09_output/output_data_zip.zip"
+    # with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+    #     # put two params to writer first - filepath to file which should be zipped,
+    #     # second - filepath to dir where should be putted archived file
+    #     archive.write(inpath, os.path.basename(inpath))
+
+    # Create a zip for multiple files
+    inpath = ["./data/08_reporting/output.xlsx", "./data/08_reporting/output.csv"]
     # put a path to output file
     outpath = "./data/09_output/output_data_zip.zip"
     with zipfile.ZipFile(outpath, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        # put two params to writer first - filepath to file which should be zipped,
-        # second - filepath to dir where should be putted archived file
-        archive.write(inpath, os.path.basename(inpath))
+        for file in inpath:
+            archive.write(file, os.path.basename(file))
+
     return save_mapped_data
 
 
@@ -120,3 +143,15 @@ def save_mapped_data_to_xls(
 #             if name == exe:
 #                 filepath_to_file_raw = os.path.abspath(os.path.join(root, name))
 #                 return filepath_to_file_raw
+
+
+def create_csv_file_from_xlsx(data_train: pd.DataFrame, inpath_to_created_csv) -> pd.DataFrame:
+    raw_data_xlsx = data_train
+    raw_data_xlsx['Invoice date'] = pd.to_datetime(raw_data_xlsx['Invoice date']).dt.strftime("%Y/%m/%d")
+    raw_data_xlsx.to_csv(inpath_to_created_csv, index=False)
+    return raw_data_xlsx
+
+
+def parse_and_format_dates(data_train: pd.DataFrame) -> pd.DataFrame:
+    data_train.loc[0:, "Invoice date"] = pd.to_datetime(data_train["Invoice date"]).dt.strftime("%Y%m%d")
+    return data_train
