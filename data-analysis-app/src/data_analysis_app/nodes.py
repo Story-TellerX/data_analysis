@@ -7,6 +7,7 @@ import zipfile
 from typing import Dict
 
 import pandas as pd
+from kedro.io import IncrementalDataSet
 
 
 def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
@@ -26,28 +27,27 @@ def get_data_for_mapping(data_for_mapping: pd.read_excel) -> Dict[str, str]:
     return dict_for_mapping
 
 
-def get_raw_data(data_raw_xlsx, data_raw_csv) -> pd.DataFrame:
+def get_raw_data(data_raw) -> pd.DataFrame:
     """Uses pandas read ExcelDataSet for getting training data.
 
     Args:
-        data_raw_csv: Training data from csv file.
-        data_raw_xlsx: Training data from xlsx file.
+        data_raw: Training data from xlsx or csv file.
 
     Returns:
         pandas DataFrame.
     """
 
-    if data_raw_csv != {} and data_raw_xlsx != {}:
-        data_train = data_raw_xlsx.get('')
-        return data_train
-    elif data_raw_xlsx:
-        data_train = data_raw_xlsx.get('')
-        return data_train
-    elif data_raw_csv:
-        data_train = data_raw_csv.get('')
-        return data_train
-    else:
-        raise ValueError
+    # if data_raw_csv != {} and data_raw_xlsx != {}:
+    #     data_train = data_raw_xlsx
+    #     return data_train
+    # elif data_raw_xlsx:
+    #     data_train = data_raw_xlsx
+    #     return data_train
+    # if data_raw_csv:
+    data_train = data_raw
+    return data_train
+    # else:
+    #     raise ValueError
     # data_train['Invoice date'] = pd.to_datetime(data_train['Invoice date']).dt.strftime("%Y/%m/%d")
 
 
@@ -68,18 +68,17 @@ def get_mapped_data(dict_for_mapping: Dict, data_train_format: pd.DataFrame) -> 
     return mapped_data_to_xls_file
 
 
-def get_data_from_xls_output_file(mapped_data: pd.read_excel, output_xlsx_path) -> pd.DataFrame:
+def get_data_from_xls_output_file(output_xlsx_path) -> pd.DataFrame:
     """Uses pandas read to_excel for get DataFrames from empty output xlsx file.
 
     Args:
-        mapped_data: read structure from output xlsx file to get DataFrames.
+        output_xlsx_path: read structure from output xlsx file to get DataFrames.
 
     Returns:
         mapped_empty_data_as_dataframe as pd.DataFrame
     """
 
-    mapped_empty_data_as_dataframe = mapped_data
-    path_to_output_xlsx = output_xlsx_path
+    mapped_empty_data_as_dataframe = pd.read_excel(output_xlsx_path, engine="openpyxl", convert_float=False)
 
     return mapped_empty_data_as_dataframe
 
@@ -155,3 +154,5 @@ def create_csv_file_from_xlsx(data_train: pd.DataFrame, inpath_to_created_csv) -
 def parse_and_format_dates(data_train: pd.DataFrame) -> pd.DataFrame:
     data_train.loc[0:, "Invoice date"] = pd.to_datetime(data_train["Invoice date"]).dt.strftime("%Y%m%d")
     return data_train
+
+IncrementalDataSet
