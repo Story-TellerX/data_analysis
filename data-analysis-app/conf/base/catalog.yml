@@ -3,24 +3,30 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/data/data_catalog.html
 
-data_raw_csv:
+data_raw:
 #  type: pandas.ExcelDataSet
-  type: IncrementalDataSet
-#  filepath: data/${folders.raw}/${filename.csv_file}
-  path: data/${folders.raw}/${filename.csv_file}
-  dataset: ${datasets.csv}
+#  type: PartitionedDataSet
+  type: data_analysis_app.extras.datasets.custom_dataset.CustomDatSet
+  filepath: data/${folders.raw}/${filename.csv_file}
+  path_to_file: data/${folders.raw}/${filename.xlsx_file}
+#  filepath: data/01_raw/data.csv
+#  path: data/${folders.raw}/${filename.csv_file}
+#  dataset: ${datasets.csv}
 #  load_args:
 #    engine: openpyxl
 #    sheet_name: Data
 #    convert_float: False
 #    dtype: {'Invoice no': int, 'PO number': int, 'Spend (SGD)': float}
 #    parse_dates: ["Invoice date"]
-data_raw_xlsx:
-  type: IncrementalDataSet
-#  type: ${datasets.xlsx}
-  path: data/${folders.raw}/${filename.xlsx_file}
-  dataset: ${datasets.xlsx}
-#  filepath: data/${folders.raw}/${filename.xlsx_file}
+
+#data_raw_xlsx:
+##  type: PartitionedDataSet
+#  type: data_analysis_app.extras.datasets.custom_dataset.CustomDataSet
+##  type: ${datasets.xlsx}
+##  path: data/${folders.raw}/${filename.xlsx_file}
+##  dataset: ${datasets.xlsx}
+#  filepath: data/01_raw/data.xlsx
+##  filepath: data/${folders.raw}/${filename.xlsx_file}
 
 data_for_mapping:
   type: pandas.ExcelDataSet

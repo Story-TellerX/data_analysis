@@ -27,7 +27,7 @@ def create_pipeline_for_mapping_and_write_xls(**kwargs) -> Pipeline:
             ),
             node(
                 func=get_raw_data,
-                inputs=["data_raw_csv", "data_raw_xlsx"],
+                inputs="data_raw",
                 outputs="data_train",
                 name="get_data_and_make_map",
             ),
@@ -64,7 +64,7 @@ def create_pipeline_for_csv_file(**kwargs) -> Pipeline:
         [
             node(
                 func=get_raw_data,
-                inputs=["data_raw_csv", "data_raw_xlsx"],
+                inputs="data_raw",
                 outputs="data_train",
                 name="get_data_and_make_map",
             ),
