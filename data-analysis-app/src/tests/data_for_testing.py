@@ -17,7 +17,7 @@ LIST_OF_COLUMNS_OUTPUT = (
 )
 
 PIPELINE_CSV = "Pipeline([\n" \
-               "Node(get_raw_data, ['data_raw_csv', 'data_raw_xlsx'], 'data_train', 'get_data_and_make_map'),\n" \
+               "Node(get_raw_data, 'data_raw', 'data_train', 'get_data_and_make_map'),\n" \
                "Node(create_csv_file_from_xlsx, ['data_train', 'params:inpath_to_created_csv'], 'raw_data_xlsx', 'raw_csv')\n" \
                "])"
 

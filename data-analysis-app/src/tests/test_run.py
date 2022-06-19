@@ -60,8 +60,8 @@ def catalog_data_xlsx():
     raw_data = pd.read_excel(
         "./src/tests/testing_data/data_for_testing.xlsx", engine="openpyxl"
     )
-    raw_data_as_dict = {'': raw_data}
-    return raw_data_as_dict
+    # raw_data_as_dict = {'': raw_data}
+    return raw_data
 
 
 @pytest.fixture(scope="module")
@@ -69,8 +69,8 @@ def catalog_data_csv():
     raw_data = pd.read_csv(
         "./src/tests/testing_data/data_for_testing.csv",
     )
-    raw_data_as_dict = {'': raw_data}
-    return raw_data_as_dict
+    # raw_data_as_dict = {'': raw_data}
+    return raw_data
 
 
 @pytest.fixture(scope="module")
@@ -123,8 +123,8 @@ def test_dict_for_mapping(catalog_mapping):
     assert test_call_func == data_for_testing.DICT_FOR_MAPPING_TEST
 
 
-def test_data_for_raw_data(catalog_data_xlsx, catalog_data_csv):
-    test_call_func = get_raw_data(catalog_data_xlsx, catalog_data_csv)
+def test_data_for_raw_data_xlsx(catalog_data_xlsx):
+    test_call_func = get_raw_data(catalog_data_xlsx)
 
     test_for_not_empty_value = test_call_func.empty
     test_value = str(test_call_func.columns)
@@ -135,7 +135,19 @@ def test_data_for_raw_data(catalog_data_xlsx, catalog_data_csv):
     assert test_for_not_empty_value is False
 
 
-def test_get_mapped_data(catalog_mapping, catalog_data_csv, catalog_data_xlsx):
+def test_data_for_raw_data_csv(catalog_data_csv):
+    test_call_func = get_raw_data(catalog_data_csv)
+
+    test_for_not_empty_value = test_call_func.empty
+    test_value = str(test_call_func.columns)
+    test_count_of_header = test_call_func.shape[1]
+    assert test_count_of_header == 5
+    assert test_value == data_for_testing.LIST_OF_COLUMNS
+    assert type(test_call_func) is pd.DataFrame
+    assert test_for_not_empty_value is False
+
+
+def test_get_mapped_data_xls(catalog_mapping, catalog_data_csv, catalog_data_xlsx):
     """
     Tests the data is mapped according to the dict mapping
 
@@ -146,7 +158,41 @@ def test_get_mapped_data(catalog_mapping, catalog_data_csv, catalog_data_xlsx):
     # get dict for mapping
     test_call_func_for_dict_mapping = get_data_for_mapping(catalog_mapping)
     # get data
-    test_call_func_for_raw_data = get_raw_data(catalog_data_xlsx, catalog_data_csv)
+    test_call_func_for_raw_data = get_raw_data(catalog_data_xlsx)
+    # count numbers of the row in the start
+    count_of_row_start = test_call_func_for_raw_data.shape[0]
+
+    # create mapped data
+    test_call_func_for_test = get_mapped_data(
+        test_call_func_for_dict_mapping, test_call_func_for_raw_data
+    )
+    # count rows after mapping has been done
+    count_row = test_call_func_for_test.shape[0]
+
+    test_for_not_empty_value = test_call_func_for_test.empty
+
+    test_value = str(test_call_func_for_test.columns)
+
+    test_count_of_header = test_call_func_for_test.shape[1]
+    assert test_for_not_empty_value is False
+    assert type(test_call_func_for_test) is pd.DataFrame
+    assert test_count_of_header == 5
+    assert test_value == data_for_testing.LIST_OF_COLUMNS_OUTPUT
+    assert count_of_row_start == count_row
+
+
+def test_get_mapped_data_csv(catalog_mapping, catalog_data_csv, catalog_data_xlsx):
+    """
+    Tests the data is mapped according to the dict mapping
+
+    :param catalog_mapping: get dict for mapping from test data
+    :param catalog_data: get data from test data
+    :return: mapped data
+    """
+    # get dict for mapping
+    test_call_func_for_dict_mapping = get_data_for_mapping(catalog_mapping)
+    # get data
+    test_call_func_for_raw_data = get_raw_data(catalog_data_csv)
     # count numbers of the row in the start
     count_of_row_start = test_call_func_for_raw_data.shape[0]
 
@@ -181,12 +227,12 @@ def test_for_raw_output_read_data(catalog_read_output_data, output_xlsx_path):
     assert test_for_not_empty_value is False
 
 
-def test_for_save_output_data(
+def test_for_save_output_data_xlsx(
         catalog_mapping, catalog_data_xlsx, catalog_data_csv, catalog_read_output_data, output_xlsx_path
 ):
     # get test data to create independent test
     test_call_func_for_dict_mapping = get_data_for_mapping(catalog_mapping)
-    test_call_func_for_raw_data = get_raw_data(catalog_data_xlsx, catalog_data_csv)
+    test_call_func_for_raw_data = get_raw_data(catalog_data_xlsx)
     test_call_func_for_test_mapped_data = get_mapped_data(
         test_call_func_for_dict_mapping, test_call_func_for_raw_data
     )
@@ -220,6 +266,44 @@ def test_for_save_output_data(
     assert count_of_row_start == count_of_row_end_file
 
 
+def test_for_save_output_data_csv(
+        catalog_mapping, catalog_data_xlsx, catalog_data_csv, catalog_read_output_data, output_xlsx_path
+):
+    # get test data to create independent test
+    test_call_func_for_dict_mapping = get_data_for_mapping(catalog_mapping)
+    test_call_func_for_raw_data = get_raw_data(catalog_data_csv)
+    test_call_func_for_test_mapped_data = get_mapped_data(
+        test_call_func_for_dict_mapping, test_call_func_for_raw_data
+    )
+    test_call_func_read_output_raw = get_data_from_xls_output_file(
+        output_xlsx_path
+    )
+
+    # call a test func/node
+    test_func_for_saving = save_mapped_data_to_xls(
+        test_call_func_for_test_mapped_data, test_call_func_read_output_raw
+    )
+    # counts rows in the start and in the end
+    count_of_row_start = test_call_func_for_raw_data.shape[0]
+    count_of_row_end_file = test_func_for_saving.shape[0]
+
+    test_for_not_empty_value = test_func_for_saving.empty
+
+    test_func_for_saving.to_csv(
+            "./src/tests/testing_data/saved_output_for_testing.csv",
+            index=False,
+            float_format="%.3f"
+    )
+
+    test_value = str(test_func_for_saving.columns)
+    test_count_of_header = test_func_for_saving.shape[1]
+    assert test_count_of_header == 5
+    assert test_value == data_for_testing.LIST_OF_COLUMNS_OUTPUT
+    assert type(test_func_for_saving) is pd.DataFrame
+    assert test_for_not_empty_value is False
+    assert count_of_row_start == count_of_row_end_file
+
+
 def test_registry_pipeline():
     test_call_func = register_pipelines()
     assert type(test_call_func) is dict
@@ -228,7 +312,7 @@ def test_registry_pipeline():
 
 
 def test_create_csv_file_from_xlsx(catalog_data_xlsx, catalog_data_csv_empty_dict, inpath_to_created_csv):
-    get_test_data = get_raw_data(catalog_data_xlsx, catalog_data_csv_empty_dict)
+    get_test_data = get_raw_data(catalog_data_xlsx)
     test_call_func = create_csv_file_from_xlsx(get_test_data, inpath_to_created_csv)
 
     test_count_of_header = test_call_func.shape[1]
@@ -239,7 +323,7 @@ def test_create_csv_file_from_xlsx(catalog_data_xlsx, catalog_data_csv_empty_dic
 
 
 def test_parse_and_format_dates_from_csv(catalog_data_xlsx_empty_dict, catalog_data_csv):
-    get_test_data = get_raw_data(catalog_data_xlsx_empty_dict, catalog_data_csv)
+    get_test_data = get_raw_data(catalog_data_csv)
     input_dates = enumerate(get_test_data["Invoice date"])
     input_dates = [date for date in input_dates]
     test_call_func = parse_and_format_dates(get_test_data)
@@ -253,7 +337,7 @@ def test_parse_and_format_dates_from_csv(catalog_data_xlsx_empty_dict, catalog_d
 
 
 def test_parse_and_format_dates_from_xlsx(catalog_data_xlsx, catalog_data_csv_empty_dict):
-    get_test_data = get_raw_data(catalog_data_xlsx, catalog_data_csv_empty_dict)
+    get_test_data = get_raw_data(catalog_data_xlsx)
     input_dates = enumerate(get_test_data["Invoice date"])
     input_dates = [date for date in input_dates]
     test_call_func = parse_and_format_dates(get_test_data)
