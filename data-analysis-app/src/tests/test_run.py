@@ -170,7 +170,7 @@ def test_get_mapped_data(catalog_mapping, catalog_data_csv, catalog_data_xlsx):
 
 
 def test_for_raw_output_read_data(catalog_read_output_data, output_xlsx_path):
-    test_call_func = get_data_from_xls_output_file(catalog_read_output_data, output_xlsx_path)
+    test_call_func = get_data_from_xls_output_file(output_xlsx_path)
 
     test_for_not_empty_value = test_call_func.empty
     test_value = str(test_call_func.columns)
@@ -191,7 +191,7 @@ def test_for_save_output_data(
         test_call_func_for_dict_mapping, test_call_func_for_raw_data
     )
     test_call_func_read_output_raw = get_data_from_xls_output_file(
-        catalog_read_output_data, output_xlsx_path
+        output_xlsx_path
     )
 
     # call a test func/node
