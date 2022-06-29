@@ -5,7 +5,7 @@ venv := .venv
 run: install
 	$(path) && $(pyrun) kedro run
 
-run_params:
+run_params: install
 	$(path) && $(pyrun) kedro run --params input_xlsx_path:./data/01_raw/data.xlsx,output_xlsx_path:./data/08_reporting/output.xlsx
 
 test:
