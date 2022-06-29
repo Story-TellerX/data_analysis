@@ -44,11 +44,19 @@ def get_raw_data(data_raw) -> pd.DataFrame:
     #     data_train = data_raw_xlsx
     #     return data_train
     # if data_raw_csv:
-    data_train = data_raw
-    return data_train
+    # data_train = data_raw
+    # return data_train
     # else:
     #     raise ValueError
     # data_train['Invoice date'] = pd.to_datetime(data_train['Invoice date']).dt.strftime("%Y/%m/%d")
+
+    if data_raw['xlsx'] is not None:
+        data_train = data_raw['xlsx']
+    elif data_raw['csv'] is not None:
+        data_train = data_raw['csv']
+    else:
+        raise ValueError
+    return data_train
 
 
 def get_mapped_data(dict_for_mapping: Dict, data_train_format: pd.DataFrame) -> pd.DataFrame:
@@ -154,5 +162,3 @@ def create_csv_file_from_xlsx(data_train: pd.DataFrame, inpath_to_created_csv) -
 def parse_and_format_dates(data_train: pd.DataFrame) -> pd.DataFrame:
     data_train.loc[0:, "Invoice date"] = pd.to_datetime(data_train["Invoice date"]).dt.strftime("%Y%m%d")
     return data_train
-
-IncrementalDataSet
